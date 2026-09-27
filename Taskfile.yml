@@ -30,8 +30,8 @@ tasks:
       vars: [DEPLOY_HOST, APP]
 
   env:
-    desc: 'показать .env аппа на сервере: task env APP=voice-hub'
+    desc: 'показать ключи .env аппа на сервере, значения скрыты: task env APP=voice-hub'
     cmds:
-      - ssh "{{.DEPLOY_USER}}@{{.DEPLOY_HOST}}" 'cat /opt/vibes/{{.APP}}/.env'
+      - ssh "{{.DEPLOY_USER}}@{{.DEPLOY_HOST}}" 'sed -nE "s/=.+/=***/; /^[A-Za-z_][A-Za-z0-9_]*=/p" /opt/vibes/{{.APP}}/.env'
     requires:
       vars: [DEPLOY_HOST, APP]
