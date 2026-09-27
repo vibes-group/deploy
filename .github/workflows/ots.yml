@@ -26,7 +26,9 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Setup SSH
         uses: ./.github/actions/setup-ssh
@@ -74,7 +76,7 @@ jobs:
           ssh "deploy@$DEPLOY_HOST" bash -s <<'EOF'
             set -euo pipefail
             for i in $(seq 1 30); do
-              if docker run --rm --network vibes_net busybox:1.38 \
+              if docker run --rm --network vibes_net busybox:1.38@sha256:fd7dc98638c8e305f4dc34e979f1c0fdfdcaeb0fbf8fcff77ae834b6da3d7e6e \
                    wget -qO- http://ots-app:3000/ >/dev/null 2>&1; then
                 echo "ots healthy on attempt $i"
                 exit 0
