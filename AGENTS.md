@@ -21,7 +21,7 @@ Host configuration is out of scope here: this repo deploys stacks onto a server 
 3. Name the service `<app>-app` — the Caddyfile references it.
 4. Take the image tag from `${IMAGE_TAG:?...}`.
 
-Wiring a new app: compose per contract → vhost `{$<APP>_HOST} { reverse_proxy <app>-app:8080 }` in `caddy/Caddyfile` → org secret `<APP>_HOST` with the public domain (scope: infra + app repo) → app-repo workflow with jobs `build` → `write-env` (uses `infra/.github/actions/write-env`) → `deploy` (uses `infra/.github/workflows/deploy.yml`).
+Wiring a new app: compose per contract → vhost `{$<APP>_HOST} { reverse_proxy <app>-app:8080 }` in `caddy/Caddyfile` → org secret `<APP>_HOST` with the public domain (scope: deploy + app repo) → app-repo workflow with jobs `build` → `write-env` (uses `deploy/.github/actions/write-env`) → `deploy` (uses `deploy/.github/workflows/deploy.yml`).
 
 ## Server ops
 

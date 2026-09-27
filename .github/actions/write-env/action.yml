@@ -1,12 +1,12 @@
 name: Write app .env on host
 description: |
   Writes /opt/vibes/<app>/.env on the deploy host from a multiline KEY=VALUE
-  string. App repos own their secret names; infra never sees them.
+  string. App repos own their secret names; this repo never sees them.
 
 inputs:
   app:
     required: true
-    description: App slug. Must match apps/<app>/compose.yml in infra.
+    description: App slug. Must match apps/<app>/compose.yml in vibes-group/deploy.
   deploy-host:
     required: true
     description: IPv4 of the deploy host (also used as PUBLIC_IP by some apps).

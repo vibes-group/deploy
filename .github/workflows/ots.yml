@@ -1,6 +1,6 @@
 name: Deploy ots
 
-# Third-party image (ghcr.io/luzifer/ots), deployed straight from infra like
+# Third-party image (ghcr.io/luzifer/ots), deployed straight from this repo like
 # caddy — no build, no app repo, no .env. Self-contained (not the reusable
 # deploy.yml, which health-polls a container healthcheck the scratch OTS image
 # can't provide).
