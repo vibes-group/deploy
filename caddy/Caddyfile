@@ -1,5 +1,7 @@
 # Caddy serves browser TLS direct (Let's Encrypt). No CDN in front.
 # Common header set + cache rules reused per host via snippet.
+# Every site imports /etc/caddy/local/<site>/*.caddy: additions that belong to the host, not to
+# the apps, set up with the host. None by default; a site without them is unchanged.
 {
 	# The admin API's one caller is this stack's health check, whose line every thirty seconds
 	# would be the whole log. Dropped from the default logger and taken back at ERROR, because a
@@ -13,8 +15,8 @@
 		level ERROR
 	}
 
-	# The HTTP site below owns port 80 — it also answers ACME for the host and its relays — so
-	# Caddy's own redirects stay out of its way.
+	# The HTTP site below owns port 80 — it also answers ACME for the host — so Caddy's own
+	# redirects stay out of its way.
 	auto_https disable_redirects
 }
 
@@ -41,6 +43,7 @@
 }
 
 {$VOICE_HUB_HOST} {
+	import /etc/caddy/local/voice-hub/*.caddy
 	encode zstd gzip
 	import common_headers
 	header Permissions-Policy "microphone=(self), camera=(self), display-capture=(self), geolocation=()"
@@ -50,6 +53,7 @@
 }
 
 {$SOZVON_HUB_HOST} {
+	import /etc/caddy/local/sozvon-hub/*.caddy
 	encode zstd gzip
 	import common_headers
 	header Permissions-Policy "microphone=(self), camera=(self), display-capture=(self), geolocation=()"
@@ -59,12 +63,14 @@
 }
 
 {$OTS_HOST} {
+	import /etc/caddy/local/ots/*.caddy
 	encode zstd gzip
 	import common_headers
 	reverse_proxy ots-app:3000
 }
 
 {$CURRENCY_HUB_HOST} {
+	import /etc/caddy/local/currency-hub/*.caddy
 	encode zstd gzip
 	import common_headers
 	header Content-Security-Policy "default-src 'self'; connect-src 'self' https:; script-src 'self'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
@@ -79,20 +85,7 @@
 
 # Share HTTP-01 validation with host services using certbot webroot.
 :80 {
-	# A host that relays another server's services can be asked to prove an address whose
-	# certificate that server holds. Caddy answers its own challenges before any route, and the
-	# webroot answers the host's; a token neither knows goes to ACME_RELAY_UPSTREAM. Unset,
-	# nothing is forwarded.
-	@relayed_acme {
-		path /.well-known/acme-challenge/*
-		not file {
-			root /srv/acme
-		}
-		expression {env.ACME_RELAY_UPSTREAM} != ""
-	}
-	handle @relayed_acme {
-		reverse_proxy {env.ACME_RELAY_UPSTREAM}
-	}
+	import /etc/caddy/local/http/*.caddy
 
 	handle /.well-known/acme-challenge/* {
 		root * /srv/acme

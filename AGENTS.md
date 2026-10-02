@@ -10,7 +10,7 @@ One server; each app is a Docker Compose stack behind Caddy, rolled out via reus
 - `caddy/` — reverse proxy; `caddy.yml` redeploys it on `caddy/**`.
 - `deploy.yml` (reusable) — ship compose to host, pull, up, wait for health; `deploy-static.yml` — static SPA publish; `actions/write-env` — app repo writes its `.env` on the host.
 
-Host configuration is out of scope here: this repo deploys stacks onto a server that is already set up. Expected to exist on the host: the network `vibes_net`, `/opt/vibes`, and `/usr/local/sbin/vibes-reboot-if-idle` (`caddy.yml` calls it to avoid redeploying mid-call).
+Host configuration is out of scope here: this repo deploys stacks onto a server that is already set up. Expected to exist on the host: the network `vibes_net`, `/opt/vibes`, and `/usr/local/sbin/vibes-reboot-if-idle` (`caddy.yml` calls it to avoid redeploying mid-call). Optional: `/etc/vibes/caddy.d/<site>/*.caddy`, host-local additions every Caddy site imports; this repo ships none.
 
 ## App contract
 
