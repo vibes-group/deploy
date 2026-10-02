@@ -25,7 +25,8 @@
 		Strict-Transport-Security "max-age=31536000; includeSubDomains"
 		X-Frame-Options "DENY"
 		X-Content-Type-Options "nosniff"
-		Referrer-Policy "strict-origin-when-cross-origin"
+		# A default only: an app that sets a stricter policy, ots among them, keeps its own.
+		?Referrer-Policy "strict-origin-when-cross-origin"
 		-Server
 		-Via
 	}
