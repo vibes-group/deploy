@@ -97,6 +97,13 @@ jobs:
             exec 9>/opt/vibes/.docker-deploy.lock
             flock -x 9
             cd /opt/vibes/caddy
+            # A new image makes Compose recreate Caddy at once, and every call's signalling goes
+            # through it: wait for the calls to end first, as the Caddyfile path below does.
+            want=$(docker compose config --images </dev/null | head -n 1)
+            running=$(docker compose ps -q caddy </dev/null)
+            if [ -n "$running" ] && [ "$(docker inspect --format '{{.Config.Image}}' "$running")" != "$want" ]; then
+              /usr/local/sbin/vibes-reboot-if-idle --wait
+            fi
             # bash -s is reading this script from stdin, so Compose must not consume it.
             docker compose up -d --remove-orphans --wait </dev/null
             host_sha=$(sha256sum Caddyfile | cut -d' ' -f1)
