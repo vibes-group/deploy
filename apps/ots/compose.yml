@@ -9,7 +9,7 @@ networks:
 
 services:
   ots-redis:
-    image: redis:8.10-alpine@sha256:3811787313eba226a2ef38658c6ccb91cd5e110edc89c37767de373120a0e5a0
+    image: redis:8.10-alpine@sha256:47b08295737773de3b711fb86f13ae802f5074e96a9a2d29f5f80164ac08c046
     restart: unless-stopped
     command:
       - redis-server
@@ -42,7 +42,7 @@ services:
       start_period: 5s
 
   ots-app:
-    image: ghcr.io/luzifer/ots:v1.23.0@sha256:b54f717cc8da4f97c53ee97a5733e07e13bd28aaaca366e83f15b54d7b660ee2
+    image: ghcr.io/luzifer/ots:v1.23.1@sha256:95a413077cada0276f26ca095598c67d18f71e8d1d6f1cab78af72ad559681ce
     restart: unless-stopped
     mem_limit: 128m
     mem_reservation: 32m
