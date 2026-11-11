@@ -7,7 +7,7 @@ name: Deploy ots
 
 on:
   push:
-    branches: [master]
+    branches: [main]
     paths:
       - 'apps/ots/**'
       - '.github/workflows/ots.yml'

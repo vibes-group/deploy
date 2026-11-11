@@ -2,7 +2,7 @@ name: Deploy caddy
 
 on:
   push:
-    branches: [master]
+    branches: [main]
     paths:
       - 'caddy/**'
       - '.github/workflows/caddy.yml'
